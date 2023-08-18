@@ -21,13 +21,27 @@ async function movieExists(req, res, next){
     }
 }
 
-function read(req, res, next){
-    const data = res.locals.movie;
-    res.json({ data });
+function read(req, res){
+    const movie = res.locals.movie;
+    res.json({ data: movie });
+}
+
+async function listTheaters(req, res){
+    const { movieId } = req.params;
+    const theaters = await service.listTheaters(movieId);
+    res.json({ data: theaters});
+}
+
+async function listReviews(req, res, next){
+    const { movieId } = req.params;
+    const reviews = await service.listReviews(movieId);
+    res.json({ data: reviews});
 }
 
 
 module.exports = {
     list: asyncErrorBoundary(list),
     read: [asyncErrorBoundary(movieExists), read],
-}
+    listTheaters: [asyncErrorBoundary(movieExists), asyncErrorBoundary(listTheaters)],
+    listReviews: [asyncErrorBoundary(movieExists), asyncErrorBoundary(listReviews)],
+};
