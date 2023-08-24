@@ -18,7 +18,7 @@ async function update(req, res){
         ...req.body.data,
         review_id: res.locals.review.review_id,
       };
-     await service.update(updatedReview);
+    await service.update(updatedReview);
     res.json({ data: await service.updatedRecord(reviewId)})
 }
 

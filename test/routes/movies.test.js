@@ -40,12 +40,12 @@ describe("Movie Routes", () => {
     test("should return active movies if `is_showing=true` is provided", async () => {
       // Set the first movie to be not showing
       const previous = await db("movies").first();
+
       await db("movies_theaters")
         .update({ is_showing: false })
         .where({ movie_id: previous.movie_id });
 
       const response = await request(app).get("/movies?is_showing=true");
-
       expect(response.body.data).toHaveLength(15);
     });
   });
